@@ -64,19 +64,15 @@ public static class Timer
 
     public static void Load()
     {
-        if (File.Exists("score.txt"))
+        if (!File.Exists("score.txt"))
+            return;
+
+        steps.Clear();
+
+        foreach (string line in File.ReadAllLines("score.txt"))
         {
-            steps.Clear();
-
-            string[] lines = File.ReadAllLines("score.txt");
-
-            foreach (string line in lines)
-            {
-                if (long.TryParse(line, out long value))
-                {
-                    steps.Add(value);
-                }
-            }
+            if (long.TryParse(line, out long value))
+                steps.Add(value);
         }
     }
 }
