@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 public static class Timer
 {
@@ -52,13 +53,30 @@ public static class Timer
 
     public static void Save()
     {
-        // TODO : save our time steps (line 7 of this script) inside a file.
+        using (StreamWriter writer = new StreamWriter("score.txt"))
+        {
+            foreach (long step in steps)
+            {
+                writer.WriteLine(step);
+            }
+        }
     }
 
     public static void Load()
     {
-        // TODO : load our time steps from a file (if we have any)
-        // and store them inside our steps variable (line 7 of this script)
-        // to show them to the player before starting a race.
+        if (File.Exists("score.txt"))
+        {
+            steps.Clear();
+
+            string[] lines = File.ReadAllLines("score.txt");
+
+            foreach (string line in lines)
+            {
+                if (long.TryParse(line, out long value))
+                {
+                    steps.Add(value);
+                }
+            }
+        }
     }
 }
